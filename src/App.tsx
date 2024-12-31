@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CloudConfigForm } from './components/CloudConfigForm';
 import { CloudConfig } from './types/config';
+import { generateRoleLoginURL } from './services/api';
 
 const App: React.FC = () => {
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
@@ -11,7 +12,6 @@ const App: React.FC = () => {
       try {
         await navigator.clipboard.writeText(generatedUrl);
         setCopySuccess(true);
-        // 2秒后重置状态
         setTimeout(() => setCopySuccess(false), 2000);
       } catch (err) {
         console.error('复制失败:', err);
@@ -20,15 +20,9 @@ const App: React.FC = () => {
   };
 
   const handleSubmit = async (config: CloudConfig): Promise<string> => {
-    // TODO: 实现实际的 API 调用
-    // 这里模拟 API 调用
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const url = `https://example.com/login?provider=${config.provider}&timestamp=${Date.now()}`;
-        setGeneratedUrl(url);
-        resolve(url);
-      }, 1000);
-    });
+    const url = await generateRoleLoginURL(config);
+    setGeneratedUrl(url);
+    return url;
   };
 
   return (
