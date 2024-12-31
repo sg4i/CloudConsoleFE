@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  cloud-credentials-ui:
+    build:
+      context: ..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: cloud-credentials-ui
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - cloud-net
+
+networks:
+  cloud-net:
+    driver: bridge 
