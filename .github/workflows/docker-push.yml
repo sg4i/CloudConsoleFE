@@ -8,6 +8,7 @@ on:
 env:
   DOCKER_REGISTRY: sgccr.ccs.tencentyun.com
   DOCKER_IMAGE: sg4i/cloudconsole-fe
+  # NODE_ENV 会在 pnpm build 时自动设置为 production
 
 jobs:
   build-and-push:
