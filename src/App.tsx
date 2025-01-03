@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { CloudConfigForm } from './components/CloudConfigForm';
 import { CloudConfig } from './types/config';
 import { generateRoleLoginURL } from './services/api';
@@ -7,17 +7,34 @@ const App: React.FC = () => {
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
 
-  const handleCopy = async () => {
-    if (generatedUrl) {
-      try {
+  const handleCopy = useCallback(async () => {
+    if (!generatedUrl) return;
+
+    try {
+      if (navigator?.clipboard) {
         await navigator.clipboard.writeText(generatedUrl);
-        setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000);
-      } catch (err) {
-        console.error('复制失败:', err);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        textArea.value = generatedUrl;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          // @ts-ignore: execCommand is deprecated but still widely supported
+          document.execCommand('copy');
+        } catch (e) {
+          console.error('复制失败:', e);
+        }
+        document.body.removeChild(textArea);
       }
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('复制失败:', err);
     }
-  };
+  }, [generatedUrl]);
 
   const handleSubmit = async (config: CloudConfig): Promise<string> => {
     const url = await generateRoleLoginURL(config);
