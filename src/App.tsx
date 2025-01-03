@@ -56,7 +56,7 @@ const App: React.FC = () => {
                 关于
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/sg4i/cloud-console"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white"
