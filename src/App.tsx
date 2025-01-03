@@ -22,7 +22,6 @@ const App: React.FC = () => {
         textArea.focus();
         textArea.select();
         try {
-          // @ts-ignore: execCommand is deprecated but still widely supported
           document.execCommand('copy');
         } catch (e) {
           console.error('复制失败:', e);

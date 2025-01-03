@@ -95,15 +95,27 @@ export const CloudConfigForm: React.FC<Props> = ({ onSubmit }) => {
         {/* Provider Selection */}
         <div>
           <label className="block text-gray-300 mb-2">云服务商</label>
-          <select
-            value={config.provider}
-            onChange={handleChange('provider')}
-            className="w-full bg-[#2a3447] text-white rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="tencent">腾讯云</option>
-            <option value="alibaba">阿里云</option>
-            <option value="aws">AWS</option>
-          </select>
+          <div className="relative">
+            <select
+              value={config.provider}
+              onChange={handleChange('provider')}
+              className="w-full bg-[#2a3447] text-white rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+            >
+              <option value="tencent">腾讯云</option>
+              <option value="alibaba">阿里云</option>
+              <option value="aws">AWS</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Secret ID */}
