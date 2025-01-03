@@ -1,10 +1,17 @@
 import axios from 'axios';
 import { CloudConfig } from '../types/config';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+// 根据环境选择baseURL
+const getBaseURL = () => {
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? '' // 生产环境使用相对路径
+      : process.env.REACT_APP_API_URL || 'http://localhost:8080'; // 开发环境使用完整URL
+  return `${baseUrl}/api`; // 统一添加/api路径
+};
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
